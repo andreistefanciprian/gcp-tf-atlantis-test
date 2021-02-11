@@ -37,6 +37,6 @@ workflows:
     apply:
       steps:
         - run: "terraform apply -input=false -auto-approve"
-    destroy:
-      steps:
-        - run: "terraform destroy -input=false -auto-approve"
+    # destroy:
+    #   steps:
+    #     - run: "terraform destroy -input=false -auto-approve"
