@@ -16,6 +16,6 @@
 terraform {
   backend "gcs" {
     bucket = "firm-alchemy-304214-tfstate"
-    prefix = "env/prod"
+    prefix = "atlantis/prod"
   }
 }
