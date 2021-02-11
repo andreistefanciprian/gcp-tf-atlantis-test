@@ -1,0 +1,39 @@
+version: 2
+
+projects:
+
+  - name: dev
+    workflow: terraform
+    dir: environments/dev
+    workspace: default
+    terraform_version: v0.13.5
+    autoplan:
+      when_modified:
+      - "*.tf"
+      - "*.tfvars"
+      enabled: true
+    apply_requirements:
+    - approved
+
+  - name: prod
+    workflow: terraform
+    dir: environments/prod
+    workspace: default
+    terraform_version: v0.13.5
+    autoplan:
+      when_modified:
+      - "*.tf"
+      - "*.tfvars"
+      enabled: true
+    apply_requirements:
+    - approved
+
+workflows:
+  terraform:
+    plan:
+      steps:
+        - run: "terraform init"
+        - run: "terraform plan"
+    apply:
+      steps:
+        - run: "terraform apply -input=false -auto-approve"
