@@ -32,11 +32,11 @@ workflows:
   terraform:
     plan:
       steps:
-        - run: "terraform init"
-        - run: "terraform plan"
+        - run: "terraform init -input=false -no-color"
+        - run: "terraform plan -input=false -refresh -no-color -out $PLANFILE"
     apply:
       steps:
-        - run: "terraform apply -input=false -auto-approve"
+        - run: "terraform apply -no-color $PLANFILE"
     # destroy:
     #   steps:
     #     - run: "terraform destroy -input=false -auto-approve"
