@@ -38,15 +38,20 @@ mv ${GCP_PROJECT}-sa.json ~/${GCP_PROJECT}-sa.json
 # have terraform service account key file as environment variable
 export GOOGLE_APPLICATION_CREDENTIALS="$HOME/${GCP_PROJECT}-sa.json"
 
-# create bucket
-gsutil mb -b on -l $GCP_REGION gs://$GCP_PROJECT-tfstate
+# create global bucket
+gsutil mb gs://$GCP_PROJECT-tfstate
 
 # check bucket was created
 gsutil ls
 
-# run terraform
-terraform init -var-file=environments/dev/terraform.tfvars  environments/dev
-terraform plan -var-file=environments/dev/terraform.tfvars  environments/dev
-terraform apply -input=false -auto-approve -var-file=environments/dev/terraform.tfvars  environments/dev
-terraform destroy -input=false -auto-approve -var-file=environments/dev/terraform.tfvars  environments/dev
+# build terraform infra
+cd environments/dev
+terraform init \
+-backend-config="bucket=$GCP_PROJECT-tfstate" \
+-backend-config="prefix=terraform/dev"
+terraform plan
+terraform apply -input=false -auto-approve
+
+# destroy terraform infra
+terraform destroy -input=false -auto-approve
 ```

@@ -15,7 +15,5 @@
 
 terraform {
   backend "gcs" {
-    bucket = "firm-alchemy-304214-tfstate"
-    prefix = "atlantis/dev"
   }
 }
